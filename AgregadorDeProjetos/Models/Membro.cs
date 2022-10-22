@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace AgregadorDeProjetos.Models
 {
-    public class Membros
+    [Table("membros")]
+    public class Membro
     {
         [Column("# id_empregado")]
         public int EmpregadoId { get; set; }
 
+
         [Column("# id_project")]
         public int ProjetoId { get; set; }
+
 
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AgregadorDeProjetos.Models
 {
-    [Table("empregado")]
-    public class Empregados
+    [Table("empregados")]
+    public class Empregado
     {
         [Column("id_empregado")]
         public int EmpregadoId { get; set; }
@@ -23,6 +23,10 @@ namespace AgregadorDeProjetos.Models
 
         [Column("endereço")]
         public string Email { get; set; }
+
+
+
+
 
 
 
