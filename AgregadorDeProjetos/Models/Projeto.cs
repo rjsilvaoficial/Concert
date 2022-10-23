@@ -14,11 +14,9 @@ namespace AgregadorDeProjetos.Models
         public int ProjetoId { get; set; }
 
         [Column("nome")]
-        [Required(ErrorMessage = "Um projeto precisa de um nome!")]
         public string NomeDoProjeto { get; set; }
 
         [Column("data-da-criação")]
-        [Required(ErrorMessage = "Um projeto precisa de data de criação!")]
         public DateTime DataDaCriacao { get; set; }
 
         [Column("data-término")]
@@ -27,7 +25,9 @@ namespace AgregadorDeProjetos.Models
         [Column("# gerente")]
         public int EmpregadoId { get; set; }
 
+        //public Empregado Gerente { get; set; }
 
+        //public ICollection<Membro>? Membros { get; set; }
 
 
 

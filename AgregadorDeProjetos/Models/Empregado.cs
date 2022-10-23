@@ -9,6 +9,11 @@ namespace AgregadorDeProjetos.Models
     [Table("empregados")]
     public class Empregado
     {
+        //public Empregado()
+        //{
+        //    Membros = new List<Membro>();
+        //}
+
         [Column("id_empregado")]
         public int EmpregadoId { get; set; }
 
@@ -24,7 +29,7 @@ namespace AgregadorDeProjetos.Models
         [Column("endereço")]
         public string Email { get; set; }
 
-
+        //public ICollection<Membro>? Membros { get; set; }
 
 
 

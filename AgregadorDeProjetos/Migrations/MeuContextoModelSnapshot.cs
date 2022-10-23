@@ -14,7 +14,7 @@ namespace AgregadorDeProjetos.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.20")
+                .HasAnnotation("ProductVersion", "3.1.30")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("AgregadorDeProjetos.Models.Empregado", b =>
@@ -57,6 +57,8 @@ namespace AgregadorDeProjetos.Migrations
 
                     b.HasKey("EmpregadoId", "ProjetoId");
 
+                    b.HasIndex("ProjetoId");
+
                     b.ToTable("membros");
                 });
 
@@ -86,7 +88,33 @@ namespace AgregadorDeProjetos.Migrations
 
                     b.HasKey("ProjetoId");
 
+                    b.HasIndex("EmpregadoId");
+
                     b.ToTable("projetos");
+                });
+
+            modelBuilder.Entity("AgregadorDeProjetos.Models.Membro", b =>
+                {
+                    b.HasOne("AgregadorDeProjetos.Models.Empregado", null)
+                        .WithMany("Membros")
+                        .HasForeignKey("EmpregadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgregadorDeProjetos.Models.Projeto", null)
+                        .WithMany("Membros")
+                        .HasForeignKey("ProjetoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AgregadorDeProjetos.Models.Projeto", b =>
+                {
+                    b.HasOne("AgregadorDeProjetos.Models.Empregado", "Gerente")
+                        .WithMany()
+                        .HasForeignKey("EmpregadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
