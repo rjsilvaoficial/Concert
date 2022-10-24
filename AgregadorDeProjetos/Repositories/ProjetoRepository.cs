@@ -34,25 +34,6 @@ namespace AgregadorDeProjetos.Repositories
         }
 
 
-        //public async Task<Projeto> GetProjeto(int id)
-        //{
-        //    try
-        //    {
-        //        var projeto = await _context.Projetos.FirstOrDefaultAsync(p => p.ProjetoId == id);
-
-        //        if (projeto != null)
-        //        {
-        //            return projeto;
-        //        }
-
-        //        return null;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception();
-        //    }
-        //}
-
         public async Task<OutputProjetoViewModel> GetProjeto(int id)
         {
             try
@@ -94,7 +75,13 @@ namespace AgregadorDeProjetos.Repositories
                 projetoOriginal.NomeDoProjeto = projetoOriginal.NomeDoProjeto;
                 projetoOriginal.DataDaCriacao = projetoAtualizado.DataDaCriacao;
                 projetoOriginal.DataDoTermino = projetoAtualizado.DataDoTermino;
-                projetoAtualizado.Gerente = projetoAtualizado.Gerente;
+                projetoOriginal.EmpregadoId = projetoAtualizado.Gerente;
+
+                if (projetoOriginal.EmpregadoId != projetoAtualizado.Gerente)
+                {
+                    _context.Membros.Add(new Membro { EmpregadoId = projetoAtualizado.Gerente, ProjetoId = projetoOriginal.ProjetoId });
+                    await _context.SaveChangesAsync();
+                }
 
                 try
                 {
@@ -116,6 +103,9 @@ namespace AgregadorDeProjetos.Repositories
             try
             {
                 _context.Projetos.Add(projetoNovo);
+                await _context.SaveChangesAsync();
+
+                _context.Membros.Add(new Membro { EmpregadoId = projetoNovo.EmpregadoId, ProjetoId = projetoNovo.ProjetoId });
                 await _context.SaveChangesAsync();
 
                 return projetoNovo;
