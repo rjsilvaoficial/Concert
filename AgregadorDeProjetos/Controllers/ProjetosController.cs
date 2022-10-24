@@ -87,7 +87,7 @@ namespace AgregadorDeProjetos.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Projeto>> PostProjeto(InputProjectViewModel projetoVM)
+        public async Task<ActionResult<OutputProjectViewModel>> PostProjeto(InputProjetoViewModel projetoVM)
         {
             var projeto = new Projeto
             {
@@ -98,7 +98,6 @@ namespace AgregadorDeProjetos.Controllers
             };
             _context.Projetos.Add(projeto);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetProjeto", new { id = projeto.ProjetoId }, projeto);
         }
 

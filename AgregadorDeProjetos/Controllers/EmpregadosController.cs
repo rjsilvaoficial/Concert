@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AgregadorDeProjetos.Data;
 using AgregadorDeProjetos.Models;
+using System.ComponentModel.DataAnnotations;
+using AgregadorDeProjetos.Repositories;
+using AgregadorDeProjetos.VIewModels;
 
 namespace AgregadorDeProjetos.Controllers
 {
@@ -14,97 +17,152 @@ namespace AgregadorDeProjetos.Controllers
     [ApiController]
     public class EmpregadosController : ControllerBase
     {
-        private readonly MeuContexto _context;
+        private readonly IEmpregadoRepository _empregadoRepository;
 
-        public EmpregadosController(MeuContexto context)
+        public EmpregadosController(IEmpregadoRepository empregadoRepository)
         {
-            _context = context;
+            _empregadoRepository = empregadoRepository;
         }
 
         // GET: api/Empregados
+        /// <summary>
+        /// Busca uma lista de empregados com paginação!
+        /// </summary>
+        /// <param name="pagina"></param>
+        /// <param name="quantidade"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Empregado>>> GetEmpregados()
+        public async Task<ActionResult<IEnumerable<Empregado>>> GetEmpregados([FromQuery, Range(1, int.MaxValue)] int pagina = 1,
+                                                                              [FromQuery, Range(1, 50)] int quantidade = 5)
         {
-            return await _context.Empregados.ToListAsync();
+            try
+            {
+                var empregados = await _empregadoRepository.GetEmpregados(pagina, quantidade);
+
+                if (empregados.Count() == 0)
+                    return NoContent();
+
+                return Ok(empregados);
+            }
+            catch (Exception)
+            {
+                return Problem();
+            }
+
         }
 
+
         // GET: api/Empregados/5
+        /// <summary>
+        /// ´Busca um empregado pelo id!
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Empregado>> GetEmpregado(int id)
         {
-            var empregado = await _context.Empregados.FindAsync(id);
-
-            if (empregado == null)
-            {
-                return NotFound();
-            }
-
-            return empregado;
-        }
-
-        // PUT: api/Empregados/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmpregado(int id, Empregado empregado)
-        {
-            if (id != empregado.EmpregadoId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(empregado).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EmpregadoExists(id))
+                var empregado = await _empregadoRepository.GetEmpregado(id);
+
+                if (empregado == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                return empregado;
+            }
+            catch (Exception)
+            {
+                return Problem();
             }
 
-            return NoContent();
         }
+
+
+
+        // PUT: api/Empregados/5
+        /// <summary>
+        /// Atualiza os dados para um empregado!
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="empregadoInput"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmpregado([FromRoute] int id, [FromBody] InputEmpregadoViewModel empregadoInput)
+        {
+
+            try
+            {
+                var empregadoUpdate = await _empregadoRepository.PutEmpregado(id, empregadoInput);
+                if(empregadoUpdate != null)
+                {
+                    return Ok(empregadoUpdate);
+                }
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return Problem();
+            }
+
+        }
+
 
         // POST: api/Empregados
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        /// <summary>
+        /// Cria um empregado!
+        /// </summary>
+        /// <param name="empregadoInputViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Empregado>> PostEmpregado(Empregado empregado)
+        public async Task<ActionResult<Empregado>> PostEmpregado(InputEmpregadoViewModel empregadoInputViewModel)
         {
-            _context.Empregados.Add(empregado);
-            await _context.SaveChangesAsync();
+            var empregado = new Empregado
+            {
+                PrimeiroNome = empregadoInputViewModel.PrimeiroNome,
+                UltimoNome = empregadoInputViewModel.UltimoNome,
+                Email = empregadoInputViewModel.Email,
+                Telefone = empregadoInputViewModel.Telefone
+            };
 
-            return CreatedAtAction("GetEmpregado", new { id = empregado.EmpregadoId }, empregado);
+            try
+            {
+                await _empregadoRepository.PostEmpregado(empregado);
+                return CreatedAtAction("GetEmpregado", new { id = empregado.EmpregadoId }, empregado);
+            }
+            catch (Exception)
+            {
+                return Problem();
+            }
         }
 
+
         // DELETE: api/Empregados/5
+        /// <summary>
+        /// Exclui um empregado pelo id!
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Empregado>> DeleteEmpregado(int id)
         {
-            var empregado = await _context.Empregados.FindAsync(id);
-            if (empregado == null)
+            try
             {
-                return NotFound();
+                var empregado = await _empregadoRepository.DeleteEmpregado(id);
+                if (empregado == null)
+                {
+                    return NotFound();
+                }
+
+                return empregado;
+            }
+            catch (Exception)
+            {
+                return Problem();
             }
 
-            _context.Empregados.Remove(empregado);
-            await _context.SaveChangesAsync();
-
-            return empregado;
         }
 
-        private bool EmpregadoExists(int id)
-        {
-            return _context.Empregados.Any(e => e.EmpregadoId == id);
-        }
     }
 }

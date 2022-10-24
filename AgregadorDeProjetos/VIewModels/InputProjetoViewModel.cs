@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgregadorDeProjetos.VIewModels
 {
-    public class InputProjectViewModel
+    public class InputProjetoViewModel
     {
         [Required(ErrorMessage = "Um projeto precisa de um nome!")]
         public string NomeDoProjeto { get; set; }
