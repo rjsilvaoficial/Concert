@@ -4,5 +4,79 @@
         <name>AgregadorDeProjetos</name>
     </assembly>
     <members>
+        <member name="M:AgregadorDeProjetos.Controllers.EmpregadosController.GetEmpregados(System.Int32,System.Int32)">
+            <summary>
+            Busca uma lista de empregados!
+            </summary>
+            <param name="pagina"></param>
+            <param name="quantidade"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.EmpregadosController.GetEmpregado(System.Int32)">
+            <summary>
+            ´Busca um empregado pelo id!
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.EmpregadosController.PutEmpregado(System.Int32,AgregadorDeProjetos.VIewModels.InputEmpregadoViewModel)">
+            <summary>
+            Atualiza os dados de um empregado!
+            </summary>
+            <param name="id"></param>
+            <param name="empregadoInput"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.EmpregadosController.PostEmpregado(AgregadorDeProjetos.VIewModels.InputEmpregadoViewModel)">
+            <summary>
+            Cria um empregado!
+            </summary>
+            <param name="empregadoInputViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.EmpregadosController.DeleteEmpregado(System.Int32)">
+            <summary>
+            Exclui um empregado pelo id!
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.ProjetosController.GetEmpregados(System.Int32,System.Int32)">
+            <summary>
+            Busca uma lista de projetos!
+            </summary>
+            <param name="pagina"></param>
+            <param name="quantidade"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.ProjetosController.GetProjeto(System.Int32)">
+            <summary>
+            ´Busca um projeto pelo id!
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.ProjetosController.PutEmpregado(System.Int32,AgregadorDeProjetos.VIewModels.InputProjetoViewModel)">
+            <summary>
+            Atualiza os dados de um projeto!
+            </summary>
+            <param name="id"></param>
+            <param name="projetoInput"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.ProjetosController.PostProjeto(AgregadorDeProjetos.VIewModels.InputProjetoViewModel)">
+            <summary>
+            Cria um projeto!
+            </summary>
+            <param name="projetoInputViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.ProjetosController.DeleteEmpregado(System.Int32)">
+            <summary>
+            Exclui um projeto pelo id!
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

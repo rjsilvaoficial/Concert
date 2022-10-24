@@ -25,8 +25,6 @@ namespace AgregadorDeProjetos.Models
         [Column("# gerente")]
         public int EmpregadoId { get; set; }
 
-        //public Empregado Gerente { get; set; }
-
         //public ICollection<Membro>? Membros { get; set; }
 
 

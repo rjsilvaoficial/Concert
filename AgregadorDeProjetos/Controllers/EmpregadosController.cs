@@ -26,7 +26,7 @@ namespace AgregadorDeProjetos.Controllers
 
         // GET: api/Empregados
         /// <summary>
-        /// Busca uma lista de empregados com paginação!
+        /// Busca uma lista de empregados!
         /// </summary>
         /// <param name="pagina"></param>
         /// <param name="quantidade"></param>
@@ -83,7 +83,7 @@ namespace AgregadorDeProjetos.Controllers
 
         // PUT: api/Empregados/5
         /// <summary>
-        /// Atualiza os dados para um empregado!
+        /// Atualiza os dados de um empregado!
         /// </summary>
         /// <param name="id"></param>
         /// <param name="empregadoInput"></param>

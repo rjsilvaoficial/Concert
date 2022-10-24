@@ -34,7 +34,26 @@ namespace AgregadorDeProjetos.Repositories
         }
 
 
-        public async Task<Projeto> GetProjeto(int id)
+        //public async Task<Projeto> GetProjeto(int id)
+        //{
+        //    try
+        //    {
+        //        var projeto = await _context.Projetos.FirstOrDefaultAsync(p => p.ProjetoId == id);
+
+        //        if (projeto != null)
+        //        {
+        //            return projeto;
+        //        }
+
+        //        return null;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception();
+        //    }
+        //}
+
+        public async Task<OutputProjetoViewModel> GetProjeto(int id)
         {
             try
             {
@@ -42,7 +61,17 @@ namespace AgregadorDeProjetos.Repositories
 
                 if (projeto != null)
                 {
-                    return projeto;
+                    var projetoOutput = new OutputProjetoViewModel
+                    {
+                        ProjetoId = projeto.ProjetoId,
+                        DataDaCriacao = projeto.DataDaCriacao,
+                        DataDoTermino = projeto.DataDoTermino,
+                        Gerente = await _context.Empregados.FirstOrDefaultAsync(e => e.EmpregadoId == projeto.EmpregadoId)
+                    };
+
+
+
+                    return projetoOutput;
                 }
 
                 return null;
@@ -54,7 +83,7 @@ namespace AgregadorDeProjetos.Repositories
         }
 
 
-        public async Task<Projeto> PutProjeto(int id, InputProjetoViewModel projetoAtualizado)
+        public async Task<OutputProjetoViewModel> PutProjeto(int id, InputProjetoViewModel projetoAtualizado)
         {
             Projeto projetoOriginal = await _context.Projetos.FirstOrDefaultAsync(p => p.ProjetoId == id);
 
@@ -65,6 +94,7 @@ namespace AgregadorDeProjetos.Repositories
                 projetoOriginal.NomeDoProjeto = projetoOriginal.NomeDoProjeto;
                 projetoOriginal.DataDaCriacao = projetoAtualizado.DataDaCriacao;
                 projetoOriginal.DataDoTermino = projetoAtualizado.DataDoTermino;
+                projetoAtualizado.Gerente = projetoAtualizado.Gerente;
 
                 try
                 {

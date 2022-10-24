@@ -26,7 +26,7 @@ namespace AgregadorDeProjetos.Controllers
 
         // GET: api/Empregados
         /// <summary>
-        /// Busca uma lista de empregados com paginação!
+        /// Busca uma lista de projetos!
         /// </summary>
         /// <param name="pagina"></param>
         /// <param name="quantidade"></param>
@@ -52,14 +52,41 @@ namespace AgregadorDeProjetos.Controllers
         }
 
 
+        //// GET: api/Empregados/5
+        ///// <summary>
+        ///// ´Busca um projeto pelo id!
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Projeto>> GetProjeto(int id)
+        //{
+        //    try
+        //    {
+        //        var projeto = await _projetoRepository.GetProjeto(id);
+
+        //        if (projeto == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        return projeto;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Problem();
+        //    }
+
+        //}
+
         // GET: api/Empregados/5
         /// <summary>
-        /// ´Busca um empregado pelo id!
+        /// ´Busca um projeto pelo id!
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Projeto>> GetProjeto(int id)
+        public async Task<ActionResult<OutputProjetoViewModel>> GetProjeto(int id)
         {
             try
             {
@@ -80,10 +107,9 @@ namespace AgregadorDeProjetos.Controllers
         }
 
 
-
         // PUT: api/Empregados/5
         /// <summary>
-        /// Atualiza os dados para um empregado!
+        /// Atualiza os dados de um projeto!
         /// </summary>
         /// <param name="id"></param>
         /// <param name="projetoInput"></param>
@@ -111,12 +137,12 @@ namespace AgregadorDeProjetos.Controllers
 
         // POST: api/Empregados
         /// <summary>
-        /// Cria um empregado!
+        /// Cria um projeto!
         /// </summary>
         /// <param name="projetoInputViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Projeto>> PostProjeto(InputProjetoViewModel projetoInputViewModel)
+        public async Task<ActionResult<OutputProjetoViewModel>> PostProjeto(InputProjetoViewModel projetoInputViewModel)
         {
             var projeto = new Projeto
             {
@@ -129,7 +155,7 @@ namespace AgregadorDeProjetos.Controllers
             try
             {
                 await _projetoRepository.PostProjeto(projeto);
-                return CreatedAtAction("GetEmpregado", new { id = projeto.ProjetoId }, projeto);
+                return CreatedAtAction("GetProjeto", new { id = projeto.ProjetoId }, projeto);
             }
             catch (Exception)
             {
@@ -140,7 +166,7 @@ namespace AgregadorDeProjetos.Controllers
 
         // DELETE: api/Empregados/5
         /// <summary>
-        /// Exclui um empregado pelo id!
+        /// Exclui um projeto pelo id!
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgregadorDeProjetos.VIewModels
 {
-    public class OutputProjectViewModel
+    public class OutputProjetoViewModel
     {
         public int ProjetoId { get; set; }
 

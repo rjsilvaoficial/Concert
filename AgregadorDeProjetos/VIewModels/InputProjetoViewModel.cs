@@ -14,10 +14,10 @@ namespace AgregadorDeProjetos.VIewModels
         [Required(ErrorMessage = "Um projeto precisa de data de criação!")]
         public DateTime DataDaCriacao { get; set; }
 
-
         public DateTime DataDoTermino { get; set; }
 
-        [Required(ErrorMessage = "Gerente precisa de um número inteiro!")]
+        //[RegularExpression("([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])", ErrorMessage = "Você precisa atribuir um id de gerente válido ao projeto!")]
+        [RegularExpression("^[1-9]{1,4}$", ErrorMessage = "Você precisa atribuir um id de gerente válido ao projeto!")]
         public int Gerente { get; set; }
     }
 }

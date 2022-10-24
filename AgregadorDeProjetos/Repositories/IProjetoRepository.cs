@@ -11,11 +11,17 @@ namespace AgregadorDeProjetos.Repositories
     {
         Task<List<Projeto>> GetProjetos(int pagina, int quantidade);
 
-        Task<Projeto> GetProjeto(int id);
+        //Task<Projeto> GetProjeto(int id);
 
-        Task<Projeto> PutProjeto(int id, InputProjetoViewModel projetoAtualizado);
+
+        Task<OutputProjetoViewModel> GetProjeto(int id);
+
+
+        Task<OutputProjetoViewModel> PutProjeto(int id, InputProjetoViewModel projetoAtualizado);
+
 
         Task<Projeto> PostProjeto(Projeto projetoNovo);
+
 
         Task<Projeto> DeleteProjeto(int id);
     }
