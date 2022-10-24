@@ -3,14 +3,16 @@ using System;
 using AgregadorDeProjetos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AgregadorDeProjetos.Migrations
 {
     [DbContext(typeof(MeuContexto))]
-    partial class MeuContextoModelSnapshot : ModelSnapshot
+    [Migration("20221024123205_Tabela_usuarios")]
+    partial class Tabela_usuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

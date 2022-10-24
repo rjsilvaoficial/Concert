@@ -17,6 +17,8 @@ namespace AgregadorDeProjetos.Data
 
         public DbSet<Membro> Membros { get; set; }
 
+        public DbSet<Usuario> Usuarios { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

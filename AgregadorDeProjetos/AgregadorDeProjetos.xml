@@ -78,5 +78,19 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:AgregadorDeProjetos.Controllers.UsuarioController.Logar(AgregadorDeProjetos.VIewModels.LoginViewModelInput)">
+            <summary>
+            Este recurso loga na aplicação!
+            </summary>
+            <param name="loginViewModelInput"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AgregadorDeProjetos.Controllers.UsuarioController.Registrar(AgregadorDeProjetos.VIewModels.RegistrarViewModelInput)">
+            <summary>
+            Este recurso registra um novo usuário!
+            </summary>
+            <param name="registrarViewModelInput"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>
