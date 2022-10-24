@@ -54,7 +54,7 @@ namespace AgregadorDeProjetos.Repositories
 
         public async Task<Empregado> PutEmpregado(int id, InputEmpregadoViewModel empregadoAtualizado)
         {
-            Empregado empregadoOriginal = _context.Empregados.FirstOrDefault(e => e.EmpregadoId == id);
+            Empregado empregadoOriginal = await _context.Empregados.FirstOrDefaultAsync(e => e.EmpregadoId == id);
 
             if (empregadoOriginal != null)
             {

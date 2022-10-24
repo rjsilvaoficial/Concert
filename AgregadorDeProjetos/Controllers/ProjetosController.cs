@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AgregadorDeProjetos.Data;
 using AgregadorDeProjetos.Models;
 using AgregadorDeProjetos.VIewModels;
+using AgregadorDeProjetos.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace AgregadorDeProjetos.Controllers
 {
@@ -15,111 +17,152 @@ namespace AgregadorDeProjetos.Controllers
     [ApiController]
     public class ProjetosController : ControllerBase
     {
-        private readonly MeuContexto _context;
+        private readonly IProjetoRepository _projetoRepository;
 
-        public ProjetosController(MeuContexto context)
+        public ProjetosController(IProjetoRepository projetoRepository)
         {
-            _context = context;
+            _projetoRepository = projetoRepository;
         }
 
-        // GET: api/Projetos
+        // GET: api/Empregados
+        /// <summary>
+        /// Busca uma lista de empregados com paginação!
+        /// </summary>
+        /// <param name="pagina"></param>
+        /// <param name="quantidade"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Projeto>>> GetProjetos()
+        public async Task<ActionResult<IEnumerable<Projeto>>> GetEmpregados([FromQuery, Range(1, int.MaxValue)] int pagina = 1,
+                                                                              [FromQuery, Range(1, 50)] int quantidade = 5)
         {
-            return await _context.Projetos.ToListAsync();
-        }
-
-        // GET: api/Projetos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<OutputProjectViewModel>> GetProjeto(int id)
-        {
-            var projeto = await _context.Projetos.FindAsync(id);
-
-            if (projeto == null)
-            {
-                return NotFound();
-            }
-            var projetoOutput = new OutputProjectViewModel
-            {
-                ProjetoId = projeto.ProjetoId,
-                DataDaCriacao = projeto.DataDaCriacao,
-                DataDoTermino = projeto.DataDoTermino,
-                GerenteId = projeto.EmpregadoId,
-                Gerente = _context.Empregados.FirstOrDefault(e => e.EmpregadoId == projeto.EmpregadoId)
-            };
-
-            return projetoOutput;
-        }
-
-        // PUT: api/Projetos/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProjeto(int id, Projeto projeto)
-        {
-            if (id != projeto.ProjetoId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(projeto).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var projetos = await _projetoRepository.GetProjetos(pagina, quantidade);
+
+                if (projetos.Count() == 0)
+                    return NoContent();
+
+                return Ok(projetos);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!ProjetoExists(id))
+                return Problem();
+            }
+
+        }
+
+
+        // GET: api/Empregados/5
+        /// <summary>
+        /// ´Busca um empregado pelo id!
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Projeto>> GetProjeto(int id)
+        {
+            try
+            {
+                var projeto = await _projetoRepository.GetProjeto(id);
+
+                if (projeto == null)
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                return projeto;
+            }
+            catch (Exception)
+            {
+                return Problem();
             }
 
-            return NoContent();
         }
 
-        // POST: api/Projetos
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
+
+        // PUT: api/Empregados/5
+        /// <summary>
+        /// Atualiza os dados para um empregado!
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="projetoInput"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutEmpregado([FromRoute] int id, [FromBody] InputProjetoViewModel projetoInput)
+        {
+
+            try
+            {
+                var projetoUpdate = await _projetoRepository.PutProjeto(id, projetoInput);
+                if (projetoUpdate != null)
+                {
+                    return Ok(projetoUpdate);
+                }
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return Problem();
+            }
+
+        }
+
+
+        // POST: api/Empregados
+        /// <summary>
+        /// Cria um empregado!
+        /// </summary>
+        /// <param name="projetoInputViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<OutputProjectViewModel>> PostProjeto(InputProjetoViewModel projetoVM)
+        public async Task<ActionResult<Projeto>> PostProjeto(InputProjetoViewModel projetoInputViewModel)
         {
             var projeto = new Projeto
             {
-                NomeDoProjeto = projetoVM.NomeDoProjeto,
-                DataDaCriacao = projetoVM.DataDaCriacao,
-                DataDoTermino = projetoVM.DataDoTermino,
-                EmpregadoId = projetoVM.Gerente
+                NomeDoProjeto = projetoInputViewModel.NomeDoProjeto,
+                DataDaCriacao = projetoInputViewModel.DataDaCriacao,
+                DataDoTermino = projetoInputViewModel.DataDoTermino,
+                EmpregadoId = projetoInputViewModel.Gerente
             };
-            _context.Projetos.Add(projeto);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetProjeto", new { id = projeto.ProjetoId }, projeto);
+
+            try
+            {
+                await _projetoRepository.PostProjeto(projeto);
+                return CreatedAtAction("GetEmpregado", new { id = projeto.ProjetoId }, projeto);
+            }
+            catch (Exception)
+            {
+                return Problem();
+            }
         }
 
-        // DELETE: api/Projetos/5
+
+        // DELETE: api/Empregados/5
+        /// <summary>
+        /// Exclui um empregado pelo id!
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Projeto>> DeleteProjeto(int id)
+        public async Task<ActionResult<Projeto>> DeleteEmpregado(int id)
         {
-            var projeto = await _context.Projetos.FindAsync(id);
-            if (projeto == null)
+            try
             {
-                return NotFound();
+                var projeto = await _projetoRepository.DeleteProjeto(id);
+                if (projeto == null)
+                {
+                    return NotFound();
+                }
+
+                return projeto;
+            }
+            catch (Exception)
+            {
+                return Problem();
             }
 
-            _context.Projetos.Remove(projeto);
-            await _context.SaveChangesAsync();
-
-            return projeto;
         }
 
-        private bool ProjetoExists(int id)
-        {
-            return _context.Projetos.Any(e => e.ProjetoId == id);
-        }
     }
 }

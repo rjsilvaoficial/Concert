@@ -32,6 +32,7 @@ namespace AgregadorDeProjetos
         {
             services.AddControllers();
             services.AddScoped<IEmpregadoRepository, EmpregadoRepository>();
+            services.AddScoped<IProjetoRepository, ProjetoRepository>();
 
             services.AddSwaggerGen(c =>
             {
