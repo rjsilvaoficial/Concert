@@ -75,11 +75,11 @@ namespace AgregadorDeProjetos.Repositories
                 projetoOriginal.NomeDoProjeto = projetoOriginal.NomeDoProjeto;
                 projetoOriginal.DataDaCriacao = projetoAtualizado.DataDaCriacao;
                 projetoOriginal.DataDoTermino = projetoAtualizado.DataDoTermino;
-                projetoOriginal.EmpregadoId = projetoAtualizado.Gerente;
+                projetoOriginal.EmpregadoId = int.Parse(projetoAtualizado.Gerente);
 
-                if (projetoOriginal.EmpregadoId != projetoAtualizado.Gerente)
+                if (projetoOriginal.EmpregadoId != int.Parse(projetoAtualizado.Gerente))
                 {
-                    _context.Membros.Add(new Membro { EmpregadoId = projetoAtualizado.Gerente, ProjetoId = projetoOriginal.ProjetoId });
+                    _context.Membros.Add(new Membro { EmpregadoId = int.Parse(projetoAtualizado.Gerente), ProjetoId = projetoOriginal.ProjetoId });
                     await _context.SaveChangesAsync();
                 }
 

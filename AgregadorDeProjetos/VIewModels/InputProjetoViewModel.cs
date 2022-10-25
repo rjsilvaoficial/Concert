@@ -9,6 +9,7 @@ namespace AgregadorDeProjetos.VIewModels
     public class InputProjetoViewModel
     {
         [Required(ErrorMessage = "Um projeto precisa de um nome!")]
+        [RegularExpression("[A-Z][A-Za-z]", ErrorMessage = "Nome do projeto recebe apenas letras!")]
         public string NomeDoProjeto { get; set; }
 
         [Required(ErrorMessage = "Um projeto precisa de data de criação!")]
@@ -16,8 +17,7 @@ namespace AgregadorDeProjetos.VIewModels
 
         public DateTime DataDoTermino { get; set; }
 
-        //[RegularExpression("([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])", ErrorMessage = "Você precisa atribuir um id de gerente válido ao projeto!")]
-        [RegularExpression("^[1-9]{1,4}$", ErrorMessage = "Você precisa atribuir um id de gerente válido ao projeto!")]
-        public int Gerente { get; set; }
+        [RegularExpression("^[1-9]{1,4}$", ErrorMessage = "Você precisa atribuir o id de um de nossos 9999 colaboradores para gerente!")]
+        public string Gerente { get; set; }
     }
 }

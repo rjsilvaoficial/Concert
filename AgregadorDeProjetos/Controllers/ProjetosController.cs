@@ -10,6 +10,8 @@ using AgregadorDeProjetos.Models;
 using AgregadorDeProjetos.VIewModels;
 using AgregadorDeProjetos.Repositories;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AgregadorDeProjetos.Controllers
 {
@@ -51,33 +53,6 @@ namespace AgregadorDeProjetos.Controllers
 
         }
 
-
-        //// GET: api/Empregados/5
-        ///// <summary>
-        ///// ´Busca um projeto pelo id!
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Projeto>> GetProjeto(int id)
-        //{
-        //    try
-        //    {
-        //        var projeto = await _projetoRepository.GetProjeto(id);
-
-        //        if (projeto == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        return projeto;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return Problem();
-        //    }
-
-        //}
 
         // GET: api/Empregados/5
         /// <summary>
@@ -149,7 +124,7 @@ namespace AgregadorDeProjetos.Controllers
                 NomeDoProjeto = projetoInputViewModel.NomeDoProjeto,
                 DataDaCriacao = projetoInputViewModel.DataDaCriacao,
                 DataDoTermino = projetoInputViewModel.DataDoTermino,
-                EmpregadoId = projetoInputViewModel.Gerente
+                EmpregadoId = int.Parse(projetoInputViewModel.Gerente)
             };
 
             try

@@ -10,6 +10,8 @@ using AgregadorDeProjetos.Models;
 using System.ComponentModel.DataAnnotations;
 using AgregadorDeProjetos.Repositories;
 using AgregadorDeProjetos.VIewModels;
+using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AgregadorDeProjetos.Controllers
 {
@@ -123,7 +125,7 @@ namespace AgregadorDeProjetos.Controllers
                 PrimeiroNome = empregadoInputViewModel.PrimeiroNome,
                 UltimoNome = empregadoInputViewModel.UltimoNome,
                 Email = empregadoInputViewModel.Email,
-                Telefone = empregadoInputViewModel.Telefone
+                Telefone = int.Parse(empregadoInputViewModel.Telefone)
             };
 
             try

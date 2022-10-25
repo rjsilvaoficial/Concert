@@ -62,7 +62,7 @@ namespace AgregadorDeProjetos.Repositories
 
                 empregadoOriginal.PrimeiroNome = empregadoAtualizado.PrimeiroNome;
                 empregadoOriginal.UltimoNome = empregadoAtualizado.UltimoNome;
-                empregadoOriginal.Telefone = empregadoAtualizado.Telefone;
+                empregadoOriginal.Telefone = int.Parse(empregadoAtualizado.Telefone);
                 empregadoOriginal.Email = empregadoAtualizado.Email;
 
                 try
