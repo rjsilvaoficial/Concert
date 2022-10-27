@@ -36,13 +36,15 @@ namespace AgregadorDeProjetos
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<IEmpregadoRepository, EmpregadoRepository>();
-            services.AddScoped<IProjetoRepository, ProjetoRepository>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IAuthenticationService, JwtService>();
+
 
             services.AddSwaggerGen(c =>
             {
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
 
                 #region Configurando Botão authorize via token no swagger
 
@@ -72,18 +74,22 @@ namespace AgregadorDeProjetos
 
                 #endregion
 
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-
-                var secret = Encoding.ASCII.GetBytes(Configuration.GetSection("JwtConfigurations:Secret").Value);
 
                 //Adicionar valores de esquematização de Jwt ao serviço de autenticação
-                services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+                
+
+
+            });
+
+
+
+            var secret = Encoding.ASCII.GetBytes(Configuration.GetSection("JwtConfigurations:Secret").Value);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
                 //Adicionar especificações para o JwtBearerToken
                 .AddJwtBearer(x =>
                 {
@@ -98,15 +104,16 @@ namespace AgregadorDeProjetos
                     };
                 });
 
-
-
-            });
             services.AddDbContext<MeuContexto>(options =>
             {
-                options.UseMySql(Configuration.GetConnectionString("ConnectionMySql"), 
+                options.UseMySql(Configuration.GetConnectionString("ConnectionMySql"),
                     builder => builder.MigrationsAssembly("AgregadorDeProjetos"));
             });
 
+            services.AddScoped<IEmpregadoRepository, EmpregadoRepository>();
+            services.AddScoped<IProjetoRepository, ProjetoRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IAuthenticationService, JwtService>();
 
         }
 

@@ -33,7 +33,7 @@ namespace AgregadorDeProjetos.Services
                     new Claim(ClaimTypes.Email, usuarioViewModelOutput.Email.ToString())
 
                 }),
-                Expires = DateTime.UtcNow.AddDays(1), //recomenda-se 1 à 2 horas
+                Expires = DateTime.UtcNow.AddHours(1), //recomenda-se 1 à 2 horas
                 SigningCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature)
             };
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();

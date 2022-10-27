@@ -17,6 +17,7 @@ namespace AgregadorDeProjetos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmpregadosController : ControllerBase
     {
         private readonly IEmpregadoRepository _empregadoRepository;
